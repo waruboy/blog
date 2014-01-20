@@ -1,6 +1,8 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
 
+  respond_to :html, :json, :js
+
   # GET /posts
   # GET /posts.json
   def index
@@ -10,6 +12,11 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.json
   def show
+    @post = Post.find params[:id]
+
+    respond_with(@post) do |format|
+      format.js { render json: @post, callback: params[:callback] }
+    end
   end
 
   # GET /posts/new
